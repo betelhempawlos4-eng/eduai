@@ -698,6 +698,7 @@ body {
   .sp-career-step { padding: 8px 10px; font-size: 11px; }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -1384,42 +1385,86 @@ async function loadNotes() {
 loadNotes();
 async function loadScholarships(){const{data}=await _supabase.from('scholarships').select('*');if(!data)return;const el=document.getElementById('sch-sub');if(el)el.textContent=data.length+' scholarships found';const list=document.getElementById('scholarships-list');if(list)list.innerHTML=data.map(s=>'<div class="sp-scholarship-item" onclick="window.open(\''+s.link+'\',\'_blank\')"><div class="sp-sch-icon"><i class="ti ti-trophy"></i></div><div class="sp-sch-info"><div class="sp-sch-name">'+s.title+'</div><div class="sp-sch-detail">'+s.amount+' · '+s.country+' · Deadline: '+s.deadline+'</div></div><span class="sp-badge badge-green">'+s.status+'</span></div>').join('');}
 loadScholarships();
+
 function exportResumePDF() {
-  const resume = `
-BETELHEM PAWLOS
-betelhempawlos7@gmail.com | github.com/betelhempawlos4-eng
-
-EDUCATION
-B.Sc. Computer Science
-Addis Ababa University · 2023–2027 · GPA: 3.8
-
-EXPERIENCE
-Software Intern — iCog Labs
-Addis Ababa · Jun–Sep 2024
-
-Freelance Web Developer
-Self-employed · 2022–present
-
-SKILLS
-Python, TensorFlow, React, Node.js, SQL, Git
-
-PROJECTS
-EduAI — AI-powered student platform
-Live at: https://eduai-3k9k.onrender.com
-  `;
-  const blob = new Blob([resume], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'Betelhem_Pawlos_Resume.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-async function startExamPractice() {
-  const subject = prompt('Which subject do you want to practice?\n\n1. Algorithms & Data Structures\n2. Machine Learning\n3. Discrete Mathematics\n4. Python Programming\n\nType the subject name:') || 'Computer Science';
-  switchTabById('tutor');
-  document.getElementById('tutor-input').value = 'Give me 5 practice exam questions about ' + subject + ' with answers. Format each question clearly with the answer below it.';
-  sendMsg();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  // Header
+  doc.setFontSize(22);
+  doc.setFont('helvetica', 'bold');
+  doc.text('BETELHEM PAWLOS', 105, 20, { align: 'center' });
+  
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('betelhempawlos7@gmail.com  |  github.com/betelhempawlos4-eng', 105, 28, { align: 'center' });
+  
+  // Line
+  doc.setDrawColor(99, 75, 219);
+  doc.setLineWidth(0.5);
+  doc.line(15, 32, 195, 32);
+  
+  // Education
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('EDUCATION', 15, 42);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('B.Sc. Computer Science', 15, 50);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Addis Ababa University  ·  2023–2027  ·  GPA: 3.8', 15, 57);
+  
+  // Line
+  doc.line(15, 62, 195, 62);
+  
+  // Experience
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('EXPERIENCE', 15, 70);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Software Intern — iCog Labs', 15, 78);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Addis Ababa  ·  Jun–Sep 2024', 15, 85);
+  doc.text('• Worked on AI and machine learning projects', 15, 92);
+  
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Freelance Web Developer', 15, 102);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Self-employed  ·  2022–present', 15, 109);
+  doc.text('• Built websites and web applications for clients', 15, 116);
+  
+  // Line
+  doc.line(15, 121, 195, 121);
+  
+  // Skills
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('SKILLS', 15, 129);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('Python  ·  TensorFlow  ·  React  ·  Node.js  ·  SQL  ·  Git', 15, 137);
+  
+  // Line
+  doc.line(15, 142, 195, 142);
+  
+  // Projects
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('PROJECTS', 15, 150);
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('EduAI — AI-powered Student Platform', 15, 158);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text('• Built a full-stack platform with AI tutor, scholarship finder, and career guidance', 15, 165);
+  doc.text('• Live at: https://eduai-3k9k.onrender.com', 15, 172);
+  
+  doc.save('Betelhem_Pawlos_Resume.pdf');
 }
 </script>
 
