@@ -1070,7 +1070,7 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
         <div class="sp-day-col"><div class="sp-day-label">Sun</div><div class="sp-day-slot" style="color:#2e2c48;">Rest</div></div>
       </div>
 
-      <div style="font-size:11px;color:#4a4868;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Today's sessions</div>
+<button class="sp-btn" style="margin-bottom:12px;" onclick="savePlanner()"><i class="ti ti-device-floppy"></i> Save My Schedule</button>
       <div style="background:#1a1828;border:0.5px solid rgba(41,217,194,0.25);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div style="font-size:13.5px;font-weight:500;color:#d4d0ea;">Review — Neural Networks & Backprop</div>
@@ -1312,6 +1312,23 @@ async function logout() {
 }
 
 initAuth();
+async function savePlanner() {
+  const { data: { session } } = await _supabase.auth.getSession();
+  if (!session) return;
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const slots = document.querySelectorAll('.sp-day-slot');
+  for (let i = 0; i < slots.length; i++) {
+    await _supabase.from('planner').delete().eq('user_id', session.user.id).eq('day', days[i]);
+    if (slots[i].classList.contains('has-event')) {
+      await _supabase.from('planner').insert({
+        user_id: session.user.id,
+        day: days[i],
+        content: slots[i].innerText
+      });
+    }
+  }
+  alert('Schedule saved! ✅');
+}
 
 // ---- NOTES SAVING ----
 async function saveNote() {
