@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduAI — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #07070f;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8e6f0;
+}
+.bg {
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(99,75,219,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,75,219,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.card {
+  background: #0f0e1c;
+  border: 0.5px solid rgba(99,75,219,0.25);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+.logo { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; justify-content: center; }
+.logo-mark {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #634bdb, #29d9c2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; color: white;
+}
+.logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; }
+.logo-text span { color: #29d9c2; }
+h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; text-align: center; }
+.sub { font-size: 13px; color: #5f5c80; text-align: center; margin-bottom: 1.75rem; }
+.tabs { display: flex; gap: 0; margin-bottom: 1.5rem; background: #09091a; border-radius: 10px; padding: 4px; }
+.tab-btn {
+  flex: 1; padding: 8px; border: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: #5f5c80; cursor: pointer; border-radius: 8px; transition: all 0.15s;
+}
+.tab-btn.active { background: #634bdb; color: white; }
+.field { margin-bottom: 14px; }
+label { display: block; font-size: 12px; color: #5f5c80; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+input {
+  width: 100%; background: #09091a; border: 0.5px solid rgba(99,75,219,0.2);
+  border-radius: 10px; padding: 11px 14px; font-size: 14px; color: #e8e6f0;
+  font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s;
+}
+input:focus { border-color: rgba(99,75,219,0.5); }
+input::placeholder { color: #3a3858; }
+.btn {
+  width: 100%; background: #634bdb; border: none; border-radius: 10px;
+  padding: 13px; font-size: 14px; font-weight: 500; color: white;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 6px;
+  transition: background 0.15s;
+}
+.btn:hover { background: #7660e8; }
+.btn:disabled { background: #3a3458; cursor: not-allowed; }
+.error {
+  background: rgba(240,112,112,0.08); border: 0.5px solid rgba(240,112,112,0.25);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #f07070;
+  margin-bottom: 14px; display: none;
+}
+.success {
+  background: rgba(41,217,194,0.08); border: 0.5px solid rgba(41,217,194,0.25);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #29d9c2;
+  margin-bottom: 14px; display: none;
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="card">
+  <div class="logo">
+    <div class="logo-mark">EA</div>
+    <div class="logo-text">Edu<span>AI</span></div>
+  </div>
+  <h2>Welcome back</h2>
+  <p class="sub">Your AI-powered student platform</p>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('login')">Sign In</button>
+    <button class="tab-btn" onclick="showTab('signup')">Sign Up</button>
+  </div>
+  <div id="error-msg" class="error"></div>
+  <div id="success-msg" class="success"></div>
+  <div id="login-form">
+    <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="you@email.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"></div>
+    <button class="btn" onclick="login()" id="login-btn">Sign In</button>
+  </div>
+  <div id="signup-form" style="display:none;">
+    <div class="field"><label>Full Name</label><input type="text" id="signup-name" placeholder="Betelhem Pawlos"></div>
+    <div class="field"><label>Email</label><input type="email" id="signup-email" placeholder="you@email.com"></div>
+    <div class="field"><label>Password</label><input type="password" id="signup-pass" placeholder="At least 6 characters"></div>
+    <button class="btn" onclick="signup()" id="signup-btn">Create Account</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://elmonhypmxxuaurnjhqu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_hUiw-DkUkAtiImxgK6_frQ_RIRt305F';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// If already logged in, redirect to app
+supabase.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = '/';
+});
+
+function showTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+  hideMessages();
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('success-msg');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('error-msg').style.display = 'none';
+}
+
+function hideMessages() {
+  document.getElementById('error-msg').style.display = 'none';
+  document.getElementById('success-msg').style.display = 'none';
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!email || !pass) return showError('Please fill in all fields.');
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  if (error) { showError(error.message); btn.disabled = false; btn.textContent = 'Sign In'; }
+  else window.location.href = '/';
+}
+
+async function signup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  if (!name || !email || !pass) return showError('Please fill in all fields.');
+  if (pass.length < 6) return showError('Password must be at least 6 characters.');
+  const btn = document.getElementById('signup-btn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  const { error } = await supabase.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
+  if (error) { showError(error.message); btn.disabled = false; btn.textContent = 'Create Account'; }
+  else showSuccess('Account created! Check your email to confirm, then sign in.');
+  btn.disabled = false; btn.textContent = 'Create Account';
+}
+</script>
+</body>
+</html>

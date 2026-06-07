@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1285,6 +1286,32 @@ function quickAsk(q) {
   document.getElementById('tutor-input').value = q;
   sendMsg();
 }
+
+// --- Supabase Auth ---
+const SUPABASE_URL = 'https://elmonhypmxxuaurnjhqu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_hUiw-DkUkAtiImxgK6_frQ_RIRt305F';
+const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function initAuth() {
+  const { data } = await _supabase.auth.getSession();
+  if (!data.session) {
+    window.location.href = '/login.html';
+    return;
+  }
+  const user = data.session.user;
+  const name = user.user_metadata?.full_name || user.email.split('@')[0];
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  document.querySelector('.sp-avatar').textContent = initials;
+  document.querySelector('.sp-user-pill').innerHTML = `<div class="sp-avatar">${initials}</div> ${name} <button onclick="logout()" style="background:none;border:none;color:#5f5c80;cursor:pointer;font-size:11px;margin-left:4px;">Sign out</button>`;
+  document.querySelector('.sp-hero-greeting span').textContent = name.split(' ')[0];
+}
+
+async function logout() {
+  await _supabase.auth.signOut();
+  window.location.href = '/login.html';
+}
+
+initAuth();
 </script>
 
 </body>
