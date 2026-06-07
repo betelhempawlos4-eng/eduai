@@ -1118,8 +1118,8 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
           <button class="sp-note-btn"><i class="ti ti-list"></i></button>
           <button class="sp-note-btn"><i class="ti ti-link"></i></button>
           <div style="flex:1;"></div>
-          <button class="sp-note-btn" style="color:#634bdb;"><i class="ti ti-sparkles"></i> AI Summary</button>
-          <button class="sp-note-btn" style="color:#29d9c2;"><i class="ti ti-cards"></i> Flashcards</button>
+     <button class="sp-note-btn" style="color:#29d9c2;" onclick="saveNote()"><i class="ti ti-device-floppy"></i> Save Note</button>
+<button class="sp-note-btn" style="color:#634bdb;"><i class="ti ti-sparkles"></i> AI Summary</button>
         </div>
         <div class="sp-note-content" contenteditable="true">
 <strong>Neural Networks — Backpropagation</strong>
@@ -1312,6 +1312,36 @@ async function logout() {
 }
 
 initAuth();
+
+// ---- NOTES SAVING ----
+async function saveNote() {
+  const { data: { session } } = await _supabase.auth.getSession();
+  if (!session) return;
+  const content = document.querySelector('.sp-note-content').innerText;
+  const title = 'Neural Networks — Lecture ' + new Date().toLocaleDateString();
+  const { error } = await _supabase.from('notes').insert({
+    user_id: session.user.id,
+    title: title,
+    content: content
+  });
+  if (!error) alert('Note saved! ✅');
+  else alert('Error saving: ' + error.message);
+}
+
+async function loadNotes() {
+  const { data: { session } } = await _supabase.auth.getSession();
+  if (!session) return;
+  const { data, error } = await _supabase
+    .from('notes')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false });
+  if (data && data.length > 0) {
+    document.querySelector('.sp-note-content').innerText = data[0].content;
+  }
+}
+
+loadNotes();
 </script>
 
 </body>
