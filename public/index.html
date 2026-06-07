@@ -1008,16 +1008,49 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
 
     <!-- RESUME -->
     <div class="sp-panel" id="panel-resume">
-      <div class="sp-section-title">Resume Builder</div>
-      <div class="sp-section-sub">ATS score: 82% — AI suggests 3 improvements</div>
-      <div class="sp-two-col">
-        <div>
-          <div class="sp-resume-section">
-            <div class="sp-resume-sec-title">Education</div>
-            <div class="sp-resume-entry">
-              <div class="sp-resume-entry-title">B.Sc. Computer Science</div>
-              <div class="sp-resume-entry-sub">Addis Ababa University · 2023–2027 · GPA: 3.8</div>
-            </div>
+  <div class="sp-section-title">Resume Builder</div>
+  <div class="sp-section-sub">Edit your resume and export as PDF</div>
+  <div class="sp-two-col">
+    <div>
+      <div class="sp-resume-section">
+        <div class="sp-resume-sec-title">Personal Info</div>
+        <input class="sp-input" id="r-name" placeholder="Full Name" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-email" placeholder="Email" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-github" placeholder="GitHub URL">
+      </div>
+      <div class="sp-resume-section">
+        <div class="sp-resume-sec-title">Education</div>
+        <input class="sp-input" id="r-degree" placeholder="Degree" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-university" placeholder="University" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-edu-date" placeholder="Years e.g. 2023-2027">
+      </div>
+      <div class="sp-resume-section">
+        <div class="sp-resume-sec-title">Experience</div>
+        <input class="sp-input" id="r-exp1-title" placeholder="Job Title & Company" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-exp1-date" placeholder="Date e.g. Jun-Sep 2024" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-exp1-desc" placeholder="What you did...">
+      </div>
+      <div class="sp-resume-section">
+        <div class="sp-resume-sec-title">Skills</div>
+        <input class="sp-input" id="r-skills" placeholder="e.g. Python, React, TensorFlow">
+      </div>
+      <div class="sp-resume-section">
+        <div class="sp-resume-sec-title">Projects</div>
+        <input class="sp-input" id="r-proj-title" placeholder="Project Name" style="margin-bottom:8px;">
+        <input class="sp-input" id="r-proj-desc" placeholder="What it does..." style="margin-bottom:8px;">
+        <input class="sp-input" id="r-proj-link" placeholder="Live URL">
+      </div>
+    </div>
+    <div>
+      <div class="sp-resume-section" style="margin-bottom:12px;">
+        <div class="sp-resume-sec-title">Preview</div>
+        <div id="resume-preview" style="font-size:12px;color:#9490c0;line-height:1.7;">Fill in your details to see preview...</div>
+      </div>
+      <button class="sp-btn" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="exportResumePDF()"><i class="ti ti-download"></i> Export PDF</button>
+      <button class="sp-btn-ghost" style="width:100%;text-align:center;" onclick="previewResume()"><i class="ti ti-eye"></i> Preview</button>
+    </div>
+  </div>
+</div>
           </div>
           <div class="sp-resume-section">
             <div class="sp-resume-sec-title">Experience</div>
