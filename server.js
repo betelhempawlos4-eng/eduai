@@ -29,7 +29,7 @@ app.post('/api/chat', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert AI tutor for CS & AI student Yonas. Explain concepts clearly with examples and code. Subject: ${subject || 'General CS & AI'}`
+            content: `You are an expert AI tutor for CS & AI student . Explain concepts clearly with examples and code. Subject: ${subject || 'General CS & AI'}`
           },
           ...messages
         ]
