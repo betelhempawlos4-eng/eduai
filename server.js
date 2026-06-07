@@ -1,4 +1,4 @@
-require('dotenv').config();
+try { require('dotenv').config(); } catch(e) {}
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -10,9 +10,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/chat', async (req, res) => {
   const { messages, subject } = req.body;
+  const apiKey = process.env.GROQ_API_KEY;
 
-  if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'your_groq_key_here') {
-    return res.status(500).json({ error: 'Groq API key not configured. Please add your key to the .env file.' });
+  if (!apiKey) {
+    return res.status(500).json({ error: 'GROQ_API_KEY not set.' });
   }
 
   try {
@@ -20,7 +21,7 @@ app.post('/api/chat', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
@@ -28,7 +29,7 @@ app.post('/api/chat', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert AI tutor specialised in Computer Science and AI, helping a university student named Yonas who is studying CS & AI. Explain concepts clearly with examples and code when helpful. Current subject: ${subject || 'General CS & AI'}`
+            content: `You are an expert AI tutor for CS & AI student Yonas. Explain concepts clearly with examples and code. Subject: ${subject || 'General CS & AI'}`
           },
           ...messages
         ]
@@ -36,18 +37,16 @@ app.post('/api/chat', async (req, res) => {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error?.message || 'Groq API request failed');
-    const text = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
-    res.json({ response: text });
+    if (!response.ok) throw new Error(data.error?.message || 'Groq API failed');
+    res.json({ response: data.choices[0]?.message?.content || 'No response.' });
 
   } catch (err) {
-    console.error('API Error:', err.message);
+    console.error('Error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`\n✅ EduAI is running!`);
-  console.log(`👉 Open your browser and go to: http://localhost:${PORT}\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ EduAI is running on port ${PORT}`);
 });
