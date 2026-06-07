@@ -1059,7 +1059,7 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
               </div>
             </div>
           </div>
-          <button class="sp-btn" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="window.print()"><i class="ti ti-download"></i> Export / Print</button>
+  <button class="sp-btn" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="exportResumePDF()"><i class="ti ti-download"></i> Export PDF</button>
           <button class="sp-btn-ghost" style="width:100%;text-align:center;">Tailor for Google internship</button>
         </div>
       </div>
@@ -1384,6 +1384,37 @@ async function loadNotes() {
 loadNotes();
 async function loadScholarships(){const{data}=await _supabase.from('scholarships').select('*');if(!data)return;const el=document.getElementById('sch-sub');if(el)el.textContent=data.length+' scholarships found';const list=document.getElementById('scholarships-list');if(list)list.innerHTML=data.map(s=>'<div class="sp-scholarship-item" onclick="window.open(\''+s.link+'\',\'_blank\')"><div class="sp-sch-icon"><i class="ti ti-trophy"></i></div><div class="sp-sch-info"><div class="sp-sch-name">'+s.title+'</div><div class="sp-sch-detail">'+s.amount+' · '+s.country+' · Deadline: '+s.deadline+'</div></div><span class="sp-badge badge-green">'+s.status+'</span></div>').join('');}
 loadScholarships();
+function exportResumePDF() {
+  const resume = `
+BETELHEM PAWLOS
+betelhempawlos7@gmail.com | github.com/betelhempawlos4-eng
+
+EDUCATION
+B.Sc. Computer Science
+Addis Ababa University · 2023–2027 · GPA: 3.8
+
+EXPERIENCE
+Software Intern — iCog Labs
+Addis Ababa · Jun–Sep 2024
+
+Freelance Web Developer
+Self-employed · 2022–present
+
+SKILLS
+Python, TensorFlow, React, Node.js, SQL, Git
+
+PROJECTS
+EduAI — AI-powered student platform
+Live at: https://eduai-3k9k.onrender.com
+  `;
+  const blob = new Blob([resume], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'Betelhem_Pawlos_Resume.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function startExamPractice() {
   const subject = prompt('Which subject do you want to practice?\n\n1. Algorithms & Data Structures\n2. Machine Learning\n3. Discrete Mathematics\n4. Python Programming\n\nType the subject name:') || 'Computer Science';
   switchTabById('tutor');
