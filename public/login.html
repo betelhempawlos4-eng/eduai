@@ -119,7 +119,8 @@ supabase.auth.getSession().then(({ data }) => {
 });
 
 function showTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+event.target.classList.add('active');
   document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
   hideMessages();
