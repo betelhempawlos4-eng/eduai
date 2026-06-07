@@ -831,7 +831,7 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
     <!-- SCHOLARSHIPS -->
     <div class="sp-panel" id="panel-scholarships">
       <div class="sp-section-title">Scholarship Finder</div>
-      <div class="sp-section-sub">12 scholarships matched to your CS/AI profile in Ethiopia</div>
+     <div class="sp-section-sub" id="sch-sub">Loading scholarships...</div><div id="scholarships-list"></div>
 
       <div class="sp-scholarship-item">
         <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
@@ -1372,6 +1372,8 @@ async function loadNotes() {
 }
 
 loadNotes();
+async function loadScholarships(){const{data}=await _supabase.from('scholarships').select('*');if(!data)return;const el=document.getElementById('sch-sub');if(el)el.textContent=data.length+' scholarships found';const list=document.getElementById('scholarships-list');if(list)list.innerHTML=data.map(s=>'<div class="sp-scholarship-item" onclick="window.open(\''+s.link+'\',\'_blank\')"><div class="sp-sch-icon"><i class="ti ti-trophy"></i></div><div class="sp-sch-info"><div class="sp-sch-name">'+s.title+'</div><div class="sp-sch-detail">'+s.amount+' · '+s.country+' · Deadline: '+s.deadline+'</div></div><span class="sp-badge badge-green">'+s.status+'</span></div>').join('');}
+loadScholarships();
 </script>
 
 </body>
