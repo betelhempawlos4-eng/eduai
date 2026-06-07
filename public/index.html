@@ -1182,7 +1182,7 @@ Key insight: each layer only needs to know the gradient flowing into it from the
       </div>
 
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="sp-btn" onclick="switchTabById('tutor')"><i class="ti ti-player-play"></i> Practice with AI Tutor</button>
+   <button class="sp-btn" onclick="startExamPractice()"><i class="ti ti-player-play"></i> Start Practice Test</button>
         <button class="sp-btn-ghost"><i class="ti ti-cards"></i> Flashcard drill</button>
         <button class="sp-btn-ghost"><i class="ti ti-chart-bar"></i> Weak areas report</button>
       </div>
@@ -1384,6 +1384,12 @@ async function loadNotes() {
 loadNotes();
 async function loadScholarships(){const{data}=await _supabase.from('scholarships').select('*');if(!data)return;const el=document.getElementById('sch-sub');if(el)el.textContent=data.length+' scholarships found';const list=document.getElementById('scholarships-list');if(list)list.innerHTML=data.map(s=>'<div class="sp-scholarship-item" onclick="window.open(\''+s.link+'\',\'_blank\')"><div class="sp-sch-icon"><i class="ti ti-trophy"></i></div><div class="sp-sch-info"><div class="sp-sch-name">'+s.title+'</div><div class="sp-sch-detail">'+s.amount+' · '+s.country+' · Deadline: '+s.deadline+'</div></div><span class="sp-badge badge-green">'+s.status+'</span></div>').join('');}
 loadScholarships();
+async function startExamPractice() {
+  const subject = prompt('Which subject do you want to practice?\n\n1. Algorithms & Data Structures\n2. Machine Learning\n3. Discrete Mathematics\n4. Python Programming\n\nType the subject name:') || 'Computer Science';
+  switchTabById('tutor');
+  document.getElementById('tutor-input').value = 'Give me 5 practice exam questions about ' + subject + ' with answers. Format each question clearly with the answer below it.';
+  sendMsg();
+}
 </script>
 
 </body>
