@@ -1061,14 +1061,14 @@ Ask me anything — algorithms, machine learning, mathematics, Python, system de
       <div class="sp-section-sub">Week of June 2–8, 2025 · 🔥 14-day streak</div>
 
       <div class="sp-planner-week">
-        <div class="sp-day-col"><div class="sp-day-label">Mon</div><div class="sp-day-slot has-event">Algorithms<br>2h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Tue</div><div class="sp-day-slot has-event">ML Math<br>1.5h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Wed</div><div class="sp-day-slot has-event">Python<br>2h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Thu</div><div class="sp-day-slot has-event">Data Structs<br>1h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Fri</div><div class="sp-day-slot today has-event">Review<br>1.5h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Sat</div><div class="sp-day-slot has-event">Projects<br>3h</div></div>
-        <div class="sp-day-col"><div class="sp-day-label">Sun</div><div class="sp-day-slot" style="color:#2e2c48;">Rest</div></div>
-      </div>
+  <div class="sp-day-col"><div class="sp-day-label">Mon</div><div class="sp-day-slot has-event" onclick="editDay(this,'Mon')">Algorithms<br>2h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Tue</div><div class="sp-day-slot has-event" onclick="editDay(this,'Tue')">ML Math<br>1.5h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Wed</div><div class="sp-day-slot has-event" onclick="editDay(this,'Wed')">Python<br>2h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Thu</div><div class="sp-day-slot has-event" onclick="editDay(this,'Thu')">Data Structs<br>1h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Fri</div><div class="sp-day-slot today has-event" onclick="editDay(this,'Fri')">Review<br>1.5h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Sat</div><div class="sp-day-slot has-event" onclick="editDay(this,'Sat')">Projects<br>3h</div></div>
+  <div class="sp-day-col"><div class="sp-day-label">Sun</div><div class="sp-day-slot" onclick="editDay(this,'Sun')">Rest</div></div>
+</div>
 
 <button class="sp-btn" style="margin-bottom:12px;" onclick="savePlanner()"><i class="ti ti-device-floppy"></i> Save My Schedule</button>
       <div style="background:#1a1828;border:0.5px solid rgba(41,217,194,0.25);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
@@ -1312,6 +1312,19 @@ async function logout() {
 }
 
 initAuth();
+
+function editDay(el, day) {
+  const current = el.innerText;
+  const newText = prompt('What are you studying on ' + day + '? (or leave empty to clear)', current);
+  if (newText === null) return;
+  if (newText.trim() === '') {
+    el.innerText = '';
+    el.classList.remove('has-event');
+  } else {
+    el.innerText = newText;
+    el.classList.add('has-event');
+  }
+}
 async function savePlanner() {
   const { data: { session } } = await _supabase.auth.getSession();
   if (!session) return;
