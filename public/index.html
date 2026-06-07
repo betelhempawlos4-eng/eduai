@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduAI — The Ultimate Student Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #07070f;
+  color: #e8e6f0;
+  min-height: 100vh;
+}
+
+.sp-root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 0 3rem;
+}
+
+.sp-grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,75,219,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,75,219,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sp-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,7,15,0.92);
+  backdrop-filter: blur(12px);
+  padding: 1rem 2rem;
+  border-bottom: 0.5px solid rgba(99,75,219,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sp-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sp-logo-mark {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #634bdb, #29d9c2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+}
+
+.sp-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #e8e6f0;
+}
+
+.sp-logo-text span { color: #29d9c2; }
+
+.sp-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(99,75,219,0.12);
+  border: 0.5px solid rgba(99,75,219,0.25);
+  border-radius: 50px;
+  padding: 6px 14px 6px 8px;
+  font-size: 13px;
+  color: #9490c0;
+}
+
+.sp-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #634bdb, #29d9c2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+}
+
+.sp-nav {
+  display: flex;
+  gap: 2px;
+  padding: 1rem 2rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+}
+.sp-nav::-webkit-scrollbar { display: none; }
+
+.sp-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px 8px 0 0;
+  font-size: 13px;
+  color: #5f5c80;
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.sp-tab:hover { color: #c0bde0; background: rgba(99,75,219,0.08); }
+
+.sp-tab.active {
+  color: #e8e6f0;
+  background: #0f0e1c;
+  border-top: 0.5px solid rgba(99,75,219,0.25);
+  border-left: 0.5px solid rgba(99,75,219,0.25);
+  border-right: 0.5px solid rgba(99,75,219,0.25);
+}
+
+.sp-tab i { font-size: 15px; }
+
+.sp-body {
+  position: relative;
+  background: #0f0e1c;
+  border-top: 0.5px solid rgba(99,75,219,0.2);
+  padding: 2rem;
+  min-height: 500px;
+  z-index: 1;
+}
+
+.sp-panel { display: none; }
+.sp-panel.active { display: block; }
+
+.sp-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #e8e6f0;
+  margin-bottom: 4px;
+}
+
+.sp-section-sub {
+  font-size: 13px;
+  color: #5f5c80;
+  margin-bottom: 1.5rem;
+}
+
+.sp-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.sp-card {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.sp-card:hover {
+  border-color: rgba(99,75,219,0.45);
+  background: #1e1c30;
+}
+
+.sp-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.sp-card-title { font-size: 13.5px; font-weight: 500; color: #d4d0ea; margin-bottom: 4px; }
+.sp-card-desc { font-size: 12px; color: #5f5c80; line-height: 1.5; }
+
+/* CHAT */
+.sp-chat-area {
+  background: #09091a;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  height: 380px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+
+.sp-msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  animation: fadeUp 0.2s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sp-msg-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.sp-msg-bubble {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.12);
+  border-radius: 0 10px 10px 10px;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #c4c0de;
+  max-width: 85%;
+  white-space: pre-wrap;
+}
+
+.sp-msg-bubble code {
+  background: rgba(99,75,219,0.15);
+  border: 0.5px solid rgba(99,75,219,0.2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: #a08aff;
+}
+
+.sp-msg-bubble pre {
+  background: #0a0918;
+  border: 0.5px solid rgba(99,75,219,0.2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  overflow-x: auto;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: #b8b4d8;
+  line-height: 1.5;
+}
+
+.sp-msg.user { flex-direction: row-reverse; }
+.sp-msg.user .sp-msg-bubble {
+  background: rgba(99,75,219,0.15);
+  border-color: rgba(99,75,219,0.25);
+  border-radius: 10px 0 10px 10px;
+  color: #d8d4f0;
+}
+
+.sp-typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  background: #1a1828;
+  border-radius: 0 10px 10px 10px;
+  width: fit-content;
+}
+
+.sp-typing span {
+  width: 6px;
+  height: 6px;
+  background: #634bdb;
+  border-radius: 50%;
+  animation: bounce 1s infinite;
+}
+
+.sp-typing span:nth-child(2) { animation-delay: 0.15s; }
+.sp-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+
+.sp-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sp-input {
+  flex: 1;
+  background: #09091a;
+  border: 0.5px solid rgba(99,75,219,0.22);
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #e8e6f0;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sp-input:focus { border-color: rgba(99,75,219,0.5); }
+.sp-input::placeholder { color: #3a3858; }
+
+.sp-btn {
+  background: #634bdb;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.sp-btn:hover { background: #7660e8; }
+.sp-btn:disabled { background: #3a3458; cursor: not-allowed; opacity: 0.6; }
+
+.sp-btn-ghost {
+  background: transparent;
+  border: 0.5px solid rgba(99,75,219,0.25);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  color: #7b78a0;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.sp-btn-ghost:hover { border-color: rgba(99,75,219,0.5); color: #c0bde0; }
+
+.sp-quick-pills {
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.sp-subject-row {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.sp-subject-pill {
+  background: rgba(99,75,219,0.1);
+  border: 0.5px solid rgba(99,75,219,0.2);
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #7b78a0;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+
+.sp-subject-pill.active, .sp-subject-pill:hover {
+  background: rgba(99,75,219,0.22);
+  border-color: rgba(99,75,219,0.5);
+  color: #c0bde0;
+}
+
+/* STATS */
+.sp-stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.sp-stat {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.sp-stat-label { font-size: 11px; color: #4a4868; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.sp-stat-val { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: #e8e6f0; }
+.sp-stat-val.teal { color: #29d9c2; }
+.sp-stat-val.purple { color: #a08aff; }
+.sp-stat-val.amber { color: #f0b429; }
+
+/* SCHOLARSHIP */
+.sp-scholarship-item {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.sp-scholarship-item:hover { border-color: rgba(41,217,194,0.4); }
+
+.sp-sch-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(41,217,194,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #29d9c2;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.sp-sch-info { flex: 1; }
+.sp-sch-name { font-size: 14px; font-weight: 500; color: #d4d0ea; margin-bottom: 3px; }
+.sp-sch-detail { font-size: 12px; color: #5f5c80; }
+
+.sp-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+.badge-green { background: rgba(41,217,194,0.1); color: #29d9c2; }
+.badge-amber { background: rgba(240,180,41,0.1); color: #f0b429; }
+.badge-purple { background: rgba(160,138,255,0.1); color: #a08aff; }
+.badge-red { background: rgba(240,112,112,0.1); color: #f07070; }
+
+/* UNIVERSITIES */
+.sp-uni-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.15);
+  border-radius: 10px;
+  padding: 13px 16px;
+  margin-bottom: 9px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.sp-uni-row:hover { border-color: rgba(99,75,219,0.4); }
+.sp-uni-rank { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #2e2c48; min-width: 32px; }
+.sp-uni-name { font-size: 14px; font-weight: 500; color: #d4d0ea; }
+.sp-uni-country { font-size: 12px; color: #5f5c80; margin-top: 2px; }
+.sp-uni-match { margin-left: auto; }
+
+/* CAREER */
+.sp-progress-item { margin-bottom: 14px; }
+.sp-progress-label { display: flex; justify-content: space-between; font-size: 12.5px; color: #7b78a0; margin-bottom: 6px; }
+.sp-progress-bar { height: 6px; background: #1a1828; border-radius: 3px; overflow: hidden; }
+.sp-progress-fill { height: 100%; border-radius: 3px; }
+
+.sp-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.sp-timeline { padding-left: 1.25rem; border-left: 1px solid rgba(99,75,219,0.15); }
+.sp-tl-item { margin-bottom: 14px; position: relative; }
+.sp-tl-item::before {
+  content: '';
+  position: absolute;
+  left: -1.37rem;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #634bdb;
+  border: 2px solid #0f0e1c;
+}
+.sp-tl-item.done::before { background: #29d9c2; }
+.sp-tl-item.future::before { background: #1a1828; border-color: rgba(99,75,219,0.3); }
+.sp-tl-title { font-size: 13px; font-weight: 500; color: #c4c0de; }
+.sp-tl-time { font-size: 12px; color: #4a4868; margin-top: 2px; }
+
+/* RESUME */
+.sp-resume-section {
+  background: #09091a;
+  border: 0.5px solid rgba(99,75,219,0.15);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.sp-resume-sec-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #634bdb; font-weight: 500; margin-bottom: 10px; }
+.sp-resume-entry { border-left: 2px solid rgba(99,75,219,0.25); padding-left: 10px; margin-bottom: 8px; }
+.sp-resume-entry-title { font-size: 13px; font-weight: 500; color: #d4d0ea; }
+.sp-resume-entry-sub { font-size: 12px; color: #5f5c80; }
+
+/* NOTES */
+.sp-note-editor {
+  background: #09091a;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.sp-note-toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 0.5px solid rgba(99,75,219,0.12);
+  align-items: center;
+}
+
+.sp-note-btn {
+  background: transparent;
+  border: none;
+  color: #5f5c80;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.12s, color 0.12s;
+}
+
+.sp-note-btn:hover { background: rgba(99,75,219,0.12); color: #c0bde0; }
+
+.sp-note-content {
+  padding: 14px 16px;
+  font-size: 13.5px;
+  color: #9490c0;
+  line-height: 1.7;
+  min-height: 120px;
+  outline: none;
+}
+
+/* PLANNER */
+.sp-planner-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sp-day-col { text-align: center; }
+.sp-day-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #3a3858; margin-bottom: 6px; }
+.sp-day-slot {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.12);
+  border-radius: 8px;
+  padding: 6px 3px;
+  font-size: 10px;
+  color: #3a3858;
+  text-align: center;
+  cursor: pointer;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s;
+  line-height: 1.3;
+}
+
+.sp-day-slot.has-event {
+  background: rgba(99,75,219,0.15);
+  border-color: rgba(99,75,219,0.3);
+  color: #a08aff;
+}
+
+.sp-day-slot.today { border-color: rgba(41,217,194,0.45); }
+
+/* EXAMS */
+.sp-exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+
+.sp-exam-card {
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.sp-exam-card:hover { border-color: rgba(99,75,219,0.45); }
+.sp-exam-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.sp-exam-card-title { font-size: 13.5px; font-weight: 500; color: #d4d0ea; }
+.sp-exam-days { font-size: 11px; padding: 3px 9px; border-radius: 50px; background: rgba(99,75,219,0.12); color: #a08aff; }
+
+/* HOME HERO */
+.sp-hero-greeting { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: #e8e6f0; margin-bottom: 6px; }
+.sp-hero-greeting span { color: #29d9c2; }
+.sp-hero-sub { font-size: 14px; color: #5f5c80; margin-bottom: 1.5rem; }
+
+.sp-quick-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+
+.sp-quick-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99,75,219,0.1);
+  border: 0.5px solid rgba(99,75,219,0.22);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #8480a8;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+
+.sp-quick-btn:hover { background: rgba(99,75,219,0.2); color: #c0bde0; border-color: rgba(99,75,219,0.4); }
+
+/* CAREER PATH */
+.sp-career-path {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none;
+}
+.sp-career-path::-webkit-scrollbar { display: none; }
+
+.sp-career-step {
+  flex-shrink: 0;
+  background: #1a1828;
+  border: 0.5px solid rgba(99,75,219,0.18);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 12.5px;
+  color: #7b78a0;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.sp-career-step.current { background: rgba(99,75,219,0.18); border-color: rgba(99,75,219,0.45); color: #c0bde0; }
+.sp-career-step .step-label { font-size: 10px; margin-top: 3px; color: #4a4868; }
+.sp-career-step.current .step-label { color: #a08aff; }
+.sp-career-step.done .step-label { color: #29d9c2; }
+
+.sp-career-arrow { font-size: 14px; color: #2e2c48; padding: 0 5px; flex-shrink: 0; }
+
+/* ERROR MSG */
+.sp-error {
+  background: rgba(240,112,112,0.08);
+  border: 0.5px solid rgba(240,112,112,0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #f07070;
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .sp-stat-row { grid-template-columns: 1fr 1fr; }
+  .sp-two-col { grid-template-columns: 1fr; }
+  .sp-exam-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="sp-grid-bg"></div>
+
+<div class="sp-root">
+  <header class="sp-header">
+    <div class="sp-logo">
+      <div class="sp-logo-mark">EA</div>
+      <div class="sp-logo-text">Edu<span>AI</span></div>
+    </div>
+    <div class="sp-user-pill">
+      <div class="sp-avatar">YS</div>
+      Yonas S.
+    </div>
+  </header>
+
+  <nav class="sp-nav" id="sp-nav">
+    <button class="sp-tab active" data-panel="home" onclick="switchTab(this)"><i class="ti ti-layout-dashboard"></i> Home</button>
+    <button class="sp-tab" data-panel="tutor" onclick="switchTab(this)"><i class="ti ti-robot"></i> AI Tutor</button>
+    <button class="sp-tab" data-panel="scholarships" onclick="switchTab(this)"><i class="ti ti-trophy"></i> Scholarships</button>
+    <button class="sp-tab" data-panel="universities" onclick="switchTab(this)"><i class="ti ti-building-community"></i> Universities</button>
+    <button class="sp-tab" data-panel="career" onclick="switchTab(this)"><i class="ti ti-briefcase"></i> Career</button>
+    <button class="sp-tab" data-panel="resume" onclick="switchTab(this)"><i class="ti ti-file-text"></i> Resume</button>
+    <button class="sp-tab" data-panel="planner" onclick="switchTab(this)"><i class="ti ti-calendar"></i> Planner</button>
+    <button class="sp-tab" data-panel="notes" onclick="switchTab(this)"><i class="ti ti-notes"></i> Notes</button>
+    <button class="sp-tab" data-panel="exams" onclick="switchTab(this)"><i class="ti ti-school"></i> Exams</button>
+  </nav>
+
+  <main class="sp-body">
+
+    <!-- HOME -->
+    <div class="sp-panel active" id="panel-home">
+      <div class="sp-hero-greeting">Good morning, <span>Yonas</span> 👋</div>
+      <div class="sp-hero-sub">Your AI-powered student command center · CS & AI track</div>
+      <div class="sp-quick-actions">
+        <button class="sp-quick-btn" onclick="switchTabById('tutor')"><i class="ti ti-robot"></i> Ask AI Tutor</button>
+        <button class="sp-quick-btn" onclick="switchTabById('scholarships')"><i class="ti ti-trophy"></i> Scholarships</button>
+        <button class="sp-quick-btn" onclick="switchTabById('planner')"><i class="ti ti-calendar"></i> Today's Plan</button>
+        <button class="sp-quick-btn" onclick="switchTabById('exams')"><i class="ti ti-school"></i> Exam Prep</button>
+      </div>
+      <div class="sp-stat-row">
+        <div class="sp-stat">
+          <div class="sp-stat-label">Scholarships matched</div>
+          <div class="sp-stat-val teal">12</div>
+        </div>
+        <div class="sp-stat">
+          <div class="sp-stat-label">Study streak</div>
+          <div class="sp-stat-val purple">14 days</div>
+        </div>
+        <div class="sp-stat">
+          <div class="sp-stat-label">Exams upcoming</div>
+          <div class="sp-stat-val amber">3</div>
+        </div>
+        <div class="sp-stat">
+          <div class="sp-stat-label">Resume score</div>
+          <div class="sp-stat-val">82%</div>
+        </div>
+      </div>
+      <div class="sp-cards-grid">
+        <div class="sp-card" onclick="switchTabById('tutor')">
+          <div class="sp-card-icon" style="background:rgba(99,75,219,0.12);color:#a08aff;"><i class="ti ti-robot"></i></div>
+          <div class="sp-card-title">AI Tutor</div>
+          <div class="sp-card-desc">Real AI — ask anything about CS, AI, math, or coding</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('scholarships')">
+          <div class="sp-card-icon" style="background:rgba(41,217,194,0.1);color:#29d9c2;"><i class="ti ti-trophy"></i></div>
+          <div class="sp-card-title">Scholarships</div>
+          <div class="sp-card-desc">12 matches based on your CS/AI profile</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('universities')">
+          <div class="sp-card-icon" style="background:rgba(160,138,255,0.1);color:#a08aff;"><i class="ti ti-building-community"></i></div>
+          <div class="sp-card-title">Universities</div>
+          <div class="sp-card-desc">Compare CS & AI programs worldwide</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('career')">
+          <div class="sp-card-icon" style="background:rgba(240,180,41,0.08);color:#f0b429;"><i class="ti ti-briefcase"></i></div>
+          <div class="sp-card-title">Career</div>
+          <div class="sp-card-desc">Your path from student to AI engineer</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('resume')">
+          <div class="sp-card-icon" style="background:rgba(99,75,219,0.1);color:#a08aff;"><i class="ti ti-file-text"></i></div>
+          <div class="sp-card-title">Resume Builder</div>
+          <div class="sp-card-desc">ATS-optimized with AI feedback</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('planner')">
+          <div class="sp-card-icon" style="background:rgba(41,217,194,0.08);color:#29d9c2;"><i class="ti ti-calendar"></i></div>
+          <div class="sp-card-title">Study Planner</div>
+          <div class="sp-card-desc">Smart weekly schedule with streaks</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('notes')">
+          <div class="sp-card-icon" style="background:rgba(240,180,41,0.08);color:#f0b429;"><i class="ti ti-notes"></i></div>
+          <div class="sp-card-title">Smart Notes</div>
+          <div class="sp-card-desc">Notes with AI summaries and flashcards</div>
+        </div>
+        <div class="sp-card" onclick="switchTabById('exams')">
+          <div class="sp-card-icon" style="background:rgba(240,112,112,0.08);color:#f07070;"><i class="ti ti-school"></i></div>
+          <div class="sp-card-title">Exam Prep</div>
+          <div class="sp-card-desc">Practice tests and weak-area analysis</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI TUTOR -->
+    <div class="sp-panel" id="panel-tutor">
+      <div class="sp-section-title">AI Tutor</div>
+      <div class="sp-section-sub">Powered by Claude — real AI, not pre-written answers</div>
+
+      <div class="sp-subject-row" id="subject-pills">
+        <button class="sp-subject-pill active" onclick="setSubject(this, 'General CS & AI')">All Topics</button>
+        <button class="sp-subject-pill" onclick="setSubject(this, 'Algorithms & Data Structures')">Algorithms</button>
+        <button class="sp-subject-pill" onclick="setSubject(this, 'Machine Learning & Deep Learning')">Machine Learning</button>
+        <button class="sp-subject-pill" onclick="setSubject(this, 'Mathematics for CS')">Math</button>
+        <button class="sp-subject-pill" onclick="setSubject(this, 'Python Programming')">Python</button>
+        <button class="sp-subject-pill" onclick="setSubject(this, 'System Design')">System Design</button>
+      </div>
+
+      <div class="sp-chat-area" id="chat-area">
+        <div class="sp-msg">
+          <div class="sp-msg-avatar" style="background:rgba(99,75,219,0.18);color:#a08aff;">AI</div>
+          <div class="sp-msg-bubble">Hi Yonas! I'm your AI tutor, powered by Claude. I specialise in Computer Science and AI concepts.
+
+Ask me anything — algorithms, machine learning, mathematics, Python, system design. I'll explain it clearly with examples and code when helpful. What would you like to learn today?</div>
+        </div>
+      </div>
+
+      <div class="sp-input-row">
+        <input class="sp-input" id="tutor-input" placeholder="Ask anything about CS, AI, math, or coding…" onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); sendMsg(); }" />
+        <button class="sp-btn" id="send-btn" onclick="sendMsg()"><i class="ti ti-send"></i> Ask</button>
+      </div>
+
+      <div class="sp-quick-pills">
+        <button class="sp-btn-ghost" onclick="quickAsk('Explain backpropagation with a simple example')">Backpropagation</button>
+        <button class="sp-btn-ghost" onclick="quickAsk('What is Big-O notation? Give examples')">Big-O notation</button>
+        <button class="sp-btn-ghost" onclick="quickAsk('Explain gradient descent step by step')">Gradient descent</button>
+        <button class="sp-btn-ghost" onclick="quickAsk('How does a transformer model work?')">Transformers</button>
+        <button class="sp-btn-ghost" onclick="quickAsk('Explain recursion with a Python example')">Recursion</button>
+      </div>
+    </div>
+
+    <!-- SCHOLARSHIPS -->
+    <div class="sp-panel" id="panel-scholarships">
+      <div class="sp-section-title">Scholarship Finder</div>
+      <div class="sp-section-sub">12 scholarships matched to your CS/AI profile in Ethiopia</div>
+
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">MasterCard Foundation Scholars Program</div>
+          <div class="sp-sch-detail">Full scholarship · African students · STEM focus · Multiple universities</div>
+        </div>
+        <span class="sp-badge badge-green">Apply now</span>
+      </div>
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">Google Generation Scholarship</div>
+          <div class="sp-sch-detail">$10,000 · CS students · Underrepresented groups in tech</div>
+        </div>
+        <span class="sp-badge badge-amber">Closing soon</span>
+      </div>
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">African Leadership University Fellowship</div>
+          <div class="sp-sch-detail">Full tuition · Leadership + technology · Pan-African</div>
+        </div>
+        <span class="sp-badge badge-green">Apply now</span>
+      </div>
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">Microsoft Research PhD Fellowship</div>
+          <div class="sp-sch-detail">Full PhD funding · AI/ML research · Global program</div>
+        </div>
+        <span class="sp-badge badge-purple">Coming soon</span>
+      </div>
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">DAAD Scholarship — Germany</div>
+          <div class="sp-sch-detail">Full funding · Engineering/CS · German universities</div>
+        </div>
+        <span class="sp-badge badge-green">Apply now</span>
+      </div>
+      <div class="sp-scholarship-item">
+        <div class="sp-sch-icon"><i class="ti ti-trophy"></i></div>
+        <div class="sp-sch-info">
+          <div class="sp-sch-name">Chevening Scholarship — UK</div>
+          <div class="sp-sch-detail">Full Masters funding · UK universities · Leadership focus</div>
+        </div>
+        <span class="sp-badge badge-amber">Opens August</span>
+      </div>
+    </div>
+
+    <!-- UNIVERSITIES -->
+    <div class="sp-panel" id="panel-universities">
+      <div class="sp-section-title">University Search</div>
+      <div class="sp-section-sub">Top CS & AI programs matched to your profile</div>
+
+      <div class="sp-uni-row">
+        <div class="sp-uni-rank">#1</div>
+        <div>
+          <div class="sp-uni-name">MIT — Computer Science & AI Lab</div>
+          <div class="sp-uni-country">🇺🇸 United States · #1 CS globally · Strong AI research</div>
+        </div>
+        <span class="sp-badge badge-green sp-uni-match">94% match</span>
+      </div>
+      <div class="sp-uni-row">
+        <div class="sp-uni-rank">#2</div>
+        <div>
+          <div class="sp-uni-name">Carnegie Mellon — CS & Machine Learning</div>
+          <div class="sp-uni-country">🇺🇸 United States · Top ML department globally</div>
+        </div>
+        <span class="sp-badge badge-green sp-uni-match">91% match</span>
+      </div>
+      <div class="sp-uni-row">
+        <div class="sp-uni-rank">#3</div>
+        <div>
+          <div class="sp-uni-name">University of Edinburgh — AI & Informatics</div>
+          <div class="sp-uni-country">🇬🇧 United Kingdom · Europe's leading AI hub</div>
+        </div>
+        <span class="sp-badge badge-amber sp-uni-match">87% match</span>
+      </div>
+      <div class="sp-uni-row">
+        <div class="sp-uni-rank">#4</div>
+        <div>
+          <div class="sp-uni-name">African Institute for Math Sciences (AIMS)</div>
+          <div class="sp-uni-country">🌍 Pan-Africa · Full scholarships · Math & AI focus</div>
+        </div>
+        <span class="sp-badge badge-purple sp-uni-match">85% match</span>
+      </div>
+      <div class="sp-uni-row">
+        <div class="sp-uni-rank">#5</div>
+        <div>
+          <div class="sp-uni-name">iCog Labs / AAiT Joint Program</div>
+          <div class="sp-uni-country">🇪🇹 Ethiopia · Local AI excellence · Industry connected</div>
+        </div>
+        <span class="sp-badge badge-green sp-uni-match">Strong fit</span>
+      </div>
+    </div>
+
+    <!-- CAREER -->
+    <div class="sp-panel" id="panel-career">
+      <div class="sp-section-title">Career Guidance</div>
+      <div class="sp-section-sub">Your personalised CS & AI career roadmap</div>
+
+      <div class="sp-career-path">
+        <div class="sp-career-step done">CS Student<div class="step-label">✓ Now</div></div>
+        <div class="sp-career-arrow"><i class="ti ti-arrow-right"></i></div>
+        <div class="sp-career-step current">Internship<div class="step-label">Year 2</div></div>
+        <div class="sp-career-arrow"><i class="ti ti-arrow-right"></i></div>
+        <div class="sp-career-step">Junior ML Eng<div class="step-label">Year 3–4</div></div>
+        <div class="sp-career-arrow"><i class="ti ti-arrow-right"></i></div>
+        <div class="sp-career-step future">AI Researcher<div class="step-label">Year 5+</div></div>
+        <div class="sp-career-arrow"><i class="ti ti-arrow-right"></i></div>
+        <div class="sp-career-step future">Lead / Founder<div class="step-label">Long-term</div></div>
+      </div>
+
+      <div class="sp-two-col">
+        <div>
+          <div style="font-size:11px;color:#4a4868;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Skills to build</div>
+          <div class="sp-progress-item">
+            <div class="sp-progress-label"><span>Python & ML frameworks</span><span>75%</span></div>
+            <div class="sp-progress-bar"><div class="sp-progress-fill" style="width:75%;background:#634bdb;"></div></div>
+          </div>
+          <div class="sp-progress-item">
+            <div class="sp-progress-label"><span>Math & Statistics</span><span>60%</span></div>
+            <div class="sp-progress-bar"><div class="sp-progress-fill" style="width:60%;background:#29d9c2;"></div></div>
+          </div>
+          <div class="sp-progress-item">
+            <div class="sp-progress-label"><span>System Design</span><span>40%</span></div>
+            <div class="sp-progress-bar"><div class="sp-progress-fill" style="width:40%;background:#f0b429;"></div></div>
+          </div>
+          <div class="sp-progress-item">
+            <div class="sp-progress-label"><span>Research / Papers</span><span>25%</span></div>
+            <div class="sp-progress-bar"><div class="sp-progress-fill" style="width:25%;background:#a08aff;"></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#4a4868;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Milestones</div>
+          <div class="sp-timeline">
+            <div class="sp-tl-item done">
+              <div class="sp-tl-title">Start CS degree at AAU</div>
+              <div class="sp-tl-time">Completed ✓</div>
+            </div>
+            <div class="sp-tl-item">
+              <div class="sp-tl-title">Apply for Google / iCog internship</div>
+              <div class="sp-tl-time">Oct 2025</div>
+            </div>
+            <div class="sp-tl-item">
+              <div class="sp-tl-title">Build ML portfolio project</div>
+              <div class="sp-tl-time">Dec 2025</div>
+            </div>
+            <div class="sp-tl-item future">
+              <div class="sp-tl-title">Publish first research paper</div>
+              <div class="sp-tl-time">2026</div>
+            </div>
+            <div class="sp-tl-item future">
+              <div class="sp-tl-title">Apply for international MS/PhD</div>
+              <div class="sp-tl-time">2026–2027</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUME -->
+    <div class="sp-panel" id="panel-resume">
+      <div class="sp-section-title">Resume Builder</div>
+      <div class="sp-section-sub">ATS score: 82% — AI suggests 3 improvements</div>
+      <div class="sp-two-col">
+        <div>
+          <div class="sp-resume-section">
+            <div class="sp-resume-sec-title">Education</div>
+            <div class="sp-resume-entry">
+              <div class="sp-resume-entry-title">B.Sc. Computer Science</div>
+              <div class="sp-resume-entry-sub">Addis Ababa University · 2023–2027 · GPA: 3.8</div>
+            </div>
+          </div>
+          <div class="sp-resume-section">
+            <div class="sp-resume-sec-title">Experience</div>
+            <div class="sp-resume-entry">
+              <div class="sp-resume-entry-title">Software Intern — iCog Labs</div>
+              <div class="sp-resume-entry-sub">Addis Ababa · Jun–Sep 2024</div>
+            </div>
+            <div class="sp-resume-entry">
+              <div class="sp-resume-entry-title">Freelance Web Developer</div>
+              <div class="sp-resume-entry-sub">Self-employed · 2022–present</div>
+            </div>
+          </div>
+          <div class="sp-resume-section">
+            <div class="sp-resume-sec-title">Skills</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+              <span class="sp-badge badge-purple">Python</span>
+              <span class="sp-badge badge-purple">TensorFlow</span>
+              <span class="sp-badge badge-purple">React</span>
+              <span class="sp-badge badge-purple">Node.js</span>
+              <span class="sp-badge badge-purple">SQL</span>
+              <span class="sp-badge badge-purple">Git</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sp-resume-section" style="margin-bottom:12px;">
+            <div class="sp-resume-sec-title">AI Suggestions</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <i class="ti ti-bulb" style="color:#f0b429;font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+                <span style="font-size:12.5px;color:#7b78a0;line-height:1.55;">Add quantified impact to your iCog Labs role — e.g. "improved model accuracy by 12%"</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <i class="ti ti-bulb" style="color:#f0b429;font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+                <span style="font-size:12.5px;color:#7b78a0;line-height:1.55;">Include a GitHub link with ML projects to significantly boost your ATS score</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <i class="ti ti-bulb" style="color:#f0b429;font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+                <span style="font-size:12.5px;color:#7b78a0;line-height:1.55;">Add a "Projects" section showcasing 2–3 strong CS/AI builds</span>
+              </div>
+            </div>
+          </div>
+          <button class="sp-btn" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="window.print()"><i class="ti ti-download"></i> Export / Print</button>
+          <button class="sp-btn-ghost" style="width:100%;text-align:center;">Tailor for Google internship</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANNER -->
+    <div class="sp-panel" id="panel-planner">
+      <div class="sp-section-title">Study Planner</div>
+      <div class="sp-section-sub">Week of June 2–8, 2025 · 🔥 14-day streak</div>
+
+      <div class="sp-planner-week">
+        <div class="sp-day-col"><div class="sp-day-label">Mon</div><div class="sp-day-slot has-event">Algorithms<br>2h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Tue</div><div class="sp-day-slot has-event">ML Math<br>1.5h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Wed</div><div class="sp-day-slot has-event">Python<br>2h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Thu</div><div class="sp-day-slot has-event">Data Structs<br>1h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Fri</div><div class="sp-day-slot today has-event">Review<br>1.5h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Sat</div><div class="sp-day-slot has-event">Projects<br>3h</div></div>
+        <div class="sp-day-col"><div class="sp-day-label">Sun</div><div class="sp-day-slot" style="color:#2e2c48;">Rest</div></div>
+      </div>
+
+      <div style="font-size:11px;color:#4a4868;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Today's sessions</div>
+      <div style="background:#1a1828;border:0.5px solid rgba(41,217,194,0.25);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:13.5px;font-weight:500;color:#d4d0ea;">Review — Neural Networks & Backprop</div>
+          <div style="font-size:12px;color:#5f5c80;margin-top:3px;">45 min · AI Tutor + Flashcards</div>
+        </div>
+        <span class="sp-badge badge-green">Now</span>
+      </div>
+      <div style="background:#1a1828;border:0.5px solid rgba(99,75,219,0.15);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:13.5px;font-weight:500;color:#8480a8;">Practice — Tree & Graph problems</div>
+          <div style="font-size:12px;color:#4a4868;margin-top:3px;">45 min · LeetCode-style</div>
+        </div>
+        <span class="sp-badge badge-purple">4:00 PM</span>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="sp-panel" id="panel-notes">
+      <div class="sp-section-title">Smart Notes</div>
+      <div class="sp-section-sub">AI-enhanced notes with summaries and flashcard generation</div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:14px;">
+        <div class="sp-card" style="padding:10px 12px;">
+          <div style="font-size:10px;color:#634bdb;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Active</div>
+          <div style="font-size:13.5px;font-weight:500;color:#d4d0ea;">Neural Networks — Lecture 7</div>
+          <div style="font-size:12px;color:#5f5c80;margin-top:3px;">Updated 2h ago · 4 flashcards</div>
+        </div>
+        <div class="sp-card" style="padding:10px 12px;">
+          <div style="font-size:10px;color:#29d9c2;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Recent</div>
+          <div style="font-size:13.5px;font-weight:500;color:#d4d0ea;">Data Structures — Trees</div>
+          <div style="font-size:12px;color:#5f5c80;margin-top:3px;">Yesterday · 7 flashcards</div>
+        </div>
+        <div class="sp-card" style="padding:10px 12px;">
+          <div style="font-size:10px;color:#f0b429;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Recent</div>
+          <div style="font-size:13.5px;font-weight:500;color:#d4d0ea;">Linear Algebra Review</div>
+          <div style="font-size:12px;color:#5f5c80;margin-top:3px;">3 days ago · 12 flashcards</div>
+        </div>
+      </div>
+
+      <div class="sp-note-editor">
+        <div class="sp-note-toolbar">
+          <button class="sp-note-btn"><strong>B</strong></button>
+          <button class="sp-note-btn"><em>I</em></button>
+          <button class="sp-note-btn" style="font-family:monospace;">&lt;/&gt;</button>
+          <button class="sp-note-btn"><i class="ti ti-list"></i></button>
+          <button class="sp-note-btn"><i class="ti ti-link"></i></button>
+          <div style="flex:1;"></div>
+          <button class="sp-note-btn" style="color:#634bdb;"><i class="ti ti-sparkles"></i> AI Summary</button>
+          <button class="sp-note-btn" style="color:#29d9c2;"><i class="ti ti-cards"></i> Flashcards</button>
+        </div>
+        <div class="sp-note-content" contenteditable="true">
+<strong>Neural Networks — Backpropagation</strong>
+
+Backpropagation uses the chain rule to compute gradients layer by layer, flowing backwards from the output to the input. Key steps:
+
+1. Forward pass → compute predictions
+2. Compute loss (e.g. cross-entropy, MSE)
+3. Backward pass → propagate gradients using ∂L/∂w
+4. Update weights: w = w - α · ∂L/∂w
+
+Key insight: each layer only needs to know the gradient flowing into it from the next layer.
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAMS -->
+    <div class="sp-panel" id="panel-exams">
+      <div class="sp-section-title">Exam Preparation</div>
+      <div class="sp-section-sub">3 exams coming up — AI-personalised practice</div>
+
+      <div class="sp-exam-grid">
+        <div class="sp-exam-card">
+          <div class="sp-exam-card-header">
+            <div class="sp-exam-card-title">Algorithms & DS</div>
+            <span class="sp-exam-days">12 days</span>
+          </div>
+          <div class="sp-progress-bar" style="margin-bottom:8px;"><div class="sp-progress-fill" style="width:65%;background:#634bdb;"></div></div>
+          <div style="font-size:12px;color:#5f5c80;">Readiness: 65% · 8 weak topics identified</div>
+        </div>
+        <div class="sp-exam-card">
+          <div class="sp-exam-card-header">
+            <div class="sp-exam-card-title">Machine Learning</div>
+            <span class="sp-exam-days">18 days</span>
+          </div>
+          <div class="sp-progress-bar" style="margin-bottom:8px;"><div class="sp-progress-fill" style="width:48%;background:#29d9c2;"></div></div>
+          <div style="font-size:12px;color:#5f5c80;">Readiness: 48% · Focus on backprop & CNNs</div>
+        </div>
+        <div class="sp-exam-card">
+          <div class="sp-exam-card-header">
+            <div class="sp-exam-card-title">Discrete Mathematics</div>
+            <span class="sp-exam-days">25 days</span>
+          </div>
+          <div class="sp-progress-bar" style="margin-bottom:8px;"><div class="sp-progress-fill" style="width:80%;background:#f0b429;"></div></div>
+          <div style="font-size:12px;color:#5f5c80;">Readiness: 80% · Almost exam-ready</div>
+        </div>
+        <div class="sp-exam-card" style="display:flex;align-items:center;justify-content:center;border-style:dashed;cursor:pointer;">
+          <span style="font-size:13px;color:#3a3858;"><i class="ti ti-plus"></i> Add exam</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="sp-btn" onclick="switchTabById('tutor')"><i class="ti ti-player-play"></i> Practice with AI Tutor</button>
+        <button class="sp-btn-ghost"><i class="ti ti-cards"></i> Flashcard drill</button>
+        <button class="sp-btn-ghost"><i class="ti ti-chart-bar"></i> Weak areas report</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+let conversationHistory = [];
+let currentSubject = 'General CS & AI';
+let isLoading = false;
+
+function switchTab(el) {
+  document.querySelectorAll('.sp-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sp-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + el.dataset.panel).classList.add('active');
+}
+
+function switchTabById(id) {
+  const tab = document.querySelector('[data-panel="' + id + '"]');
+  if (tab) switchTab(tab);
+}
+
+function setSubject(el, subject) {
+  document.querySelectorAll('.sp-subject-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentSubject = subject;
+}
+
+function formatMessage(text) {
+  text = text.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+    return '<pre>' + code.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</pre>';
+  });
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  return text;
+}
+
+async function sendMsg() {
+  if (isLoading) return;
+  const input = document.getElementById('tutor-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const area = document.getElementById('chat-area');
+  const sendBtn = document.getElementById('send-btn');
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'sp-msg user';
+  userMsg.innerHTML = `<div class="sp-msg-avatar" style="background:linear-gradient(135deg,#634bdb,#29d9c2);color:white;">Y</div><div class="sp-msg-bubble">${text.replace(/</g,'&lt;')}</div>`;
+  area.appendChild(userMsg);
+  area.scrollTop = area.scrollHeight;
+
+  input.value = '';
+  isLoading = true;
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<i class="ti ti-loader"></i> Thinking…';
+
+  const typingEl = document.createElement('div');
+  typingEl.className = 'sp-msg';
+  typingEl.innerHTML = `<div class="sp-msg-avatar" style="background:rgba(99,75,219,0.18);color:#a08aff;">AI</div><div class="sp-typing"><span></span><span></span><span></span></div>`;
+  area.appendChild(typingEl);
+  area.scrollTop = area.scrollHeight;
+
+  conversationHistory.push({ role: 'user', content: text });
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory, subject: currentSubject })
+    });
+
+    const data = await res.json();
+    area.removeChild(typingEl);
+
+    if (data.error) {
+      const errEl = document.createElement('div');
+      errEl.className = 'sp-error';
+      errEl.textContent = '⚠️ ' + data.error;
+      area.appendChild(errEl);
+      conversationHistory.pop();
+    } else {
+      const reply = data.response;
+      conversationHistory.push({ role: 'assistant', content: reply });
+
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'sp-msg';
+      aiMsg.innerHTML = `<div class="sp-msg-avatar" style="background:rgba(99,75,219,0.18);color:#a08aff;">AI</div><div class="sp-msg-bubble">${formatMessage(reply)}</div>`;
+      area.appendChild(aiMsg);
+    }
+  } catch (err) {
+    area.removeChild(typingEl);
+    const errEl = document.createElement('div');
+    errEl.className = 'sp-error';
+    errEl.textContent = '⚠️ Could not connect to server. Make sure server.js is running.';
+    area.appendChild(errEl);
+    conversationHistory.pop();
+  }
+
+  isLoading = false;
+  sendBtn.disabled = false;
+  sendBtn.innerHTML = '<i class="ti ti-send"></i> Ask';
+  area.scrollTop = area.scrollHeight;
+}
+
+function quickAsk(q) {
+  document.getElementById('tutor-input').value = q;
+  sendMsg();
+}
+</script>
+
+</body>
+</html>
