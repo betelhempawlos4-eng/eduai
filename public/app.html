@@ -783,6 +783,8 @@ body {
           <div class="sp-card-icon" style="background:rgba(99,75,219,0.1);color:#a08aff;"><i class="ti ti-file-text"></i></div>
           <div class="sp-card-title">Resume Builder</div>
           <div class="sp-card-desc">ATS-optimized with AI feedback</div>
+          <button class="sp-btn" style="margin-top:1rem;" onclick="getCareerAdvice()"><i class="ti ti-sparkles"></i> Get AI Career Advice</button>
+<div id="career-advice" style="margin-top:12px;"></div>
         </div>
         <div class="sp-card" onclick="switchTabById('planner')">
           <div class="sp-card-icon" style="background:rgba(41,217,194,0.08);color:#29d9c2;"><i class="ti ti-calendar"></i></div>
@@ -1372,6 +1374,31 @@ async function loadNotes() {
 loadNotes();
 async function loadScholarships(){const{data}=await _supabase.from('scholarships').select('*');if(!data)return;const el=document.getElementById('sch-sub');if(el)el.textContent=data.length+' scholarships found';const list=document.getElementById('scholarships-list');if(list)list.innerHTML=data.map(s=>'<div class="sp-scholarship-item" onclick="window.open(\''+s.link+'\',\'_blank\')"><div class="sp-sch-icon"><i class="ti ti-trophy"></i></div><div class="sp-sch-info"><div class="sp-sch-name">'+s.title+'</div><div class="sp-sch-detail">'+s.amount+' · '+s.country+' · Deadline: '+s.deadline+'</div></div><span class="sp-badge badge-green">'+s.status+'</span></div>').join('');}
 loadScholarships();
+async function getCareerAdvice() {
+  const btn = document.querySelector('[onclick="getCareerAdvice()"]');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader"></i> Getting advice...';
+  const div = document.getElementById('career-advice');
+  div.innerHTML = '<div class="sp-msg-bubble" style="margin-top:8px;">Loading personalized career advice...</div>';
+  
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: 'Give me a personalized career roadmap for a Computer Science and AI student in Africa. Include: 1) Top 3 skills to learn now, 2) Best internship opportunities, 3) How to get into top AI companies, 4) Scholarships to apply for. Be specific and actionable.' }],
+        subject: 'Career Guidance'
+      })
+    });
+    const data = await res.json();
+    div.innerHTML = '<div class="sp-msg-bubble" style="margin-top:8px;">' + formatMessage(data.response) + '</div>';
+  } catch(err) {
+    div.innerHTML = '<div class="sp-error">Could not load advice. Try again!</div>';
+  }
+  
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-sparkles"></i> Get AI Career Advice';
+}
 
 function exportResumePDF() {
   const { jsPDF } = window.jspdf;
