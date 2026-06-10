@@ -62,7 +62,7 @@ const sb = window.supabase.createClient(
 );
 
 sb.auth.getSession().then(({data}) => {
-  if (data.session) window.location.href = '/';
+  if (data.session) window.location.href = '/app.html';;
 });
 
 function showSection(name) {
@@ -78,7 +78,7 @@ async function login() {
   if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return; }
   const { error } = await sb.auth.signInWithPassword({ email, password: pass });
   if (error) { err.textContent = error.message; err.style.display = 'block'; }
-  else window.location.href = '/';
+  else window.location.href = '/app.html';;
 }
 
 async function signup() {
