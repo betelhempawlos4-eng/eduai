@@ -1,4 +1,4 @@
-try { require('dotenv').config(); } catch(e) {}
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -8,12 +8,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
 app.post('/api/chat', async (req, res) => {
   const { messages, subject } = req.body;
-  const apiKey = process.env.GROQ_API_KEY;
 
-  if (!apiKey) {
-    return res.status(500).json({ error: 'GROQ_API_KEY not set.' });
+  if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'your_groq_key_here') {
+    return res.status(500).json({ error: 'Groq API key not configured. Please add your key to the .env file.' });
   }
 
   try {
@@ -21,7 +24,7 @@ app.post('/api/chat', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
@@ -29,7 +32,17 @@ app.post('/api/chat', async (req, res) => {
         messages: [
           {
             role: 'system',
-            content: `You are an expert AI tutor for CS & AI student . Explain concepts clearly with examples and code. Subject: ${subject || 'General CS & AI'}`
+            content: `You are an expert AI tutor specialised in Computer Science and AI, helping a university student named Yonas who is studying CS & AI.
+
+Your role is to:
+- Explain concepts clearly with examples and analogies
+- Break down complex topics step by step
+- Use code examples when relevant (format with markdown code blocks)
+- Be encouraging and supportive
+- Keep responses concise but thorough (3-6 sentences for simple questions, more for complex ones)
+- When explaining algorithms or code, always include a simple example
+
+Current subject focus: ${subject || 'General CS & AI'}`
           },
           ...messages
         ]
@@ -37,16 +50,22 @@ app.post('/api/chat', async (req, res) => {
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error?.message || 'Groq API failed');
-    res.json({ response: data.choices[0]?.message?.content || 'No response.' });
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || 'Groq API request failed');
+    }
+
+    const text = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
+    res.json({ response: text });
 
   } catch (err) {
-    console.error('Error:', err.message);
+    console.error('API Error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ EduAI is running on port ${PORT}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`\n✅ EduAI is running!`);
+  console.log(`👉 Open your browser and go to: http://localhost:${PORT}\n`);
 });
